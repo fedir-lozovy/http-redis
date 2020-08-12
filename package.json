@@ -1,0 +1,23 @@
+{
+  "name": "httpredis",
+  "version": "2.0.0",
+  "description": "",
+  "main": ".eslintrc.js",
+  "scripts": {
+    "start": "node dist/main.js",
+    "start:dev": "tsc && node dist/main.js",
+    "startsub": "node dist/subscribe.js",
+    "startsub:dev": "tsc && node dist/subscribe.js",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@types/ioredis": "^4.14.9",
+    "ioredis": "^4.16.2"
+  },
+  "devDependencies": {
+    "@types/node": "^13.11.1",
+    "ts-node": "^8.8.2"
+  },
+  "author": "Fedir",
+  "license": "ISC"
+}
