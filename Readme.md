@@ -32,7 +32,7 @@ Notice that time needs to be send with timezone. Server timezone is GMT, contain
 
 Please use the following request to test endpoint (Check the time of message).
 ```
-curl --header "Content-Type: application/json" --request POST --data '{"body":"Hello here","time":"2020-04-13T14:35:00Z"}'  http://localhost:3000/echoAtTime
+curl --header "Content-Type: application/json" --request POST --data '{"body":"Hello here","time":"2020-08-12T09:35:00Z"}'  http://localhost:3000/echoAtTime
 ```
 
 Basic validation is set:
