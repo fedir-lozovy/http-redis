@@ -16,8 +16,7 @@ In case the server was down when a message should have been printed, it should p
 
 Run 
 ```
-docker-compose up -d redis
-docker-compose up app
+docker-compose up -d
 ```
 
 API accepts POST requests on http://localhost:3000/echoAtTime
@@ -26,7 +25,7 @@ It expects JSON payload with the following structure
 ```json
 {
    "body":"Message text",
-   "time": "2020-04-13T00:00:00Z"
+   "time": "2020-08-13T00:00:00Z"
 }
 ```
 Notice that time needs to be send with timezone. Server timezone is GMT, container's console output contains current server time.
