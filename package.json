@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@types/ioredis": "^4.14.9",
-    "ioredis": "^4.16.2"
+    "ioredis": "^4.16.2",
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "@types/node": "^13.11.1",
