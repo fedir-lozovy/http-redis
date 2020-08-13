@@ -53,10 +53,10 @@ export default class Redis extends MessageBroker {
     }
 
     public async publish(message: Message) {
-        const key=uuidv4();
+        const key = uuidv4();
         const time = new Date(message.time).getTime();
-        const now =  getCurrentUnixTimeGMT();
-        const timeToExpiration = parseInt(`${(time - now) / 1000}` ,0);
+        const now = getCurrentUnixTimeGMT();
+        const timeToExpiration = parseInt(`${(time - now) / 1000}`, 0);
         await this._instance.multi()
             .hmset(key, 'time', message.time, 'body', message.body)
             .set(`reminder:${key}`, 1)
@@ -76,10 +76,15 @@ export default class Redis extends MessageBroker {
         await _this._subscriber.psubscribe('__keyevent@0__:expired', 1);
         await _this._subscriber.on("pmessage", async (pattern, channel, message) => {
             const [type, key] = message.split(":");
+
             switch (type) {
                 case "reminder": {
-                    const value = await _this._instance.hget(key,'body','time').exec();
-                    _this.echo(value);
+                    const value = await _this._instance
+                        .multi()
+                        .hget(key, 'body')
+                        .exec();
+                    if (value[0] && value[0][1])
+                        _this.echo(value[0][1]);
                     break;
                 }
             }
