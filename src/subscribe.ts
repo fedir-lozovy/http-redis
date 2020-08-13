@@ -5,11 +5,6 @@ import redisConfig from "./config/redisConfig";
     const mq = new Redis(redisConfig);
     await mq.init();
     await mq.subscribe( async <FunctionMessage>(message) => {
-        try {
-            const {time, body} = JSON.parse(message);
-            console.log(`${time}: ${body}`)
-        }catch(err){
-            console.error("Message parse error",err);
-        }
+            console.log(message)
     })
 })()
