@@ -2,6 +2,7 @@ import MessageBroker from "./MessageBroker";
 import Message from "../interfaces/Message";
 import FunctionMessage from "../interfaces/FunctionMessage";
 import MessageBrokerOptions from "../interfaces/MessageBrokerOptions";
+import {v4 as uuidv4} from 'uuid';
 
 import {getCurrentUnixTimeGMT} from "../utils";
 import * as IORedis from "ioredis";
@@ -52,13 +53,14 @@ export default class Redis extends MessageBroker {
     }
 
     public async publish(message: Message) {
+        const key=uuidv4();
         const time = new Date(message.time).getTime();
         const now =  getCurrentUnixTimeGMT();
         const timeToExpiration = parseInt(`${(time - now) / 1000}` ,0);
         await this._instance.multi()
-            .set(time, JSON.stringify(message))
-            .set(`reminder:${time}`, 1)
-            .expire(`reminder:${time}`, timeToExpiration)
+            .hmset(key, 'time', message.time, 'body', message.body)
+            .set(`reminder:${key}`, 1)
+            .expire(`reminder:${key}`, timeToExpiration)
             .exec();
 
         if (process.env.DEBUG)
@@ -76,7 +78,7 @@ export default class Redis extends MessageBroker {
             const [type, key] = message.split(":");
             switch (type) {
                 case "reminder": {
-                    const value = await _this._instance.get(key);
+                    const value = await _this._instance.hget(key,'body','time').exec();
                     _this.echo(value);
                     break;
                 }
